@@ -1,34 +1,72 @@
 import React, { useState } from 'react'
 import { ImageBackground, StyleSheet, Text, View, Dimensions, Pressable } from 'react-native';
-
+let moves = 0;
 export default function Interface() {
     const backgroundImage = require('./tic_tak_toe_bg.png');
 
-    const [one, setone] = useState('');
-    const [two, settwo] = useState('');
-    const [three, setthree] = useState('');
-    const [four, setfour] = useState('');
-    const [five, setfive] = useState('');
-    const [six, setsix] = useState('');
-    const [seven, setseven] = useState('');
-    const [eight, seteight] = useState('');
-    const [nine, setnine] = useState('');
-    const [restart, setrestart] = useState('Start');
+    const [one, setone] = useState(' ');
+    const [two, settwo] = useState(' ');
+    const [three, setthree] = useState(' ');
+    const [four, setfour] = useState(' ');
+    const [five, setfive] = useState(' ');
+    const [six, setsix] = useState(' ');
+    const [seven, setseven] = useState(' ');
+    const [eight, seteight] = useState(' ');
+    const [nine, setnine] = useState(' ');
+    const [win, setwin] = useState(false);
+    const [tie, settie] = useState(false);
     const [game, setgame] = useState(false);
     const [xandy, setxandy] = useState('Lets Start');
     const [turn, setturn] = useState(1);
 
+
+
+    const winner = () => {
+        if ((one === two && one === three && (one === 'X' || one === 'O')) ||
+            (four === five && four === six && (four === 'X' || four === 'O')) ||
+            (seven === eight && seven === nine && (seven === 'X' || seven === 'O'))) {
+            setwin(true);
+        }
+        // Columns
+        else if ((one === four && one === seven && (one === 'X' || one === 'O')) ||
+            (two === five && two === eight && (two === 'X' || two === 'O')) ||
+            (three === six && three === nine && (three === 'X' || three === 'O'))) {
+            setwin(true);
+        }
+        // Diagonals
+        else if ((one === five && one === nine && (one === 'X' || one === 'O')) ||
+            (three === five && three === seven && (three === 'X' || three === 'O'))) {
+            setwin(true);
+        }
+        else if (moves == 9) {
+            settie(true)
+        }
+        else {
+            settie(false)
+        }
+    }
+    const x = () => {
+        setxandy('0 players turn')
+        setturn(2)
+        moves = moves + 1
+        winner()
+    }
+    const y = () => {
+        setxandy('X players turn')
+        setturn(1)
+        moves = moves + 1
+        winner()
+    }
     const One = () => {
         if (game) {
             if (turn == 1) {
                 setone('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
+
             }
             else if (turn == 2) {
-                setone('0')
-                setxandy('X players turn')
-                setturn(1)
+                setone('O')
+                y()
             }
 
         }
@@ -37,13 +75,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 settwo('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                settwo('0')
-                setxandy('X players turn')
-                setturn(1)
+                settwo('O')
+                y()
             }
 
         }
@@ -52,13 +88,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 setthree('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                setthree('0')
-                setxandy('X players turn')
-                setturn(1)
+                setthree('O')
+                y()
             }
 
         }
@@ -67,13 +101,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 setfour('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                setfour('0')
-                setxandy('X players turn')
-                setturn(1)
+                setfour('O')
+                y()
             }
 
         }
@@ -82,13 +114,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 setfive('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                setfive('0')
-                setxandy('X players turn')
-                setturn(1)
+                setfive('O')
+                y()
             }
 
         }
@@ -97,13 +127,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 setsix('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                setsix('0')
-                setxandy('X players turn')
-                setturn(1)
+                setsix('O')
+                y()
             }
 
         }
@@ -112,13 +140,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 setseven('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                setseven('0')
-                setxandy('X players turn')
-                setturn(1)
+                setseven('O')
+                y()
             }
 
         }
@@ -127,13 +153,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 seteight('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                seteight('0')
-                setxandy('X players turn')
-                setturn(1)
+                seteight('O')
+                y()
             }
 
         }
@@ -142,13 +166,11 @@ export default function Interface() {
         if (game) {
             if (turn == 1) {
                 setnine('X')
-                setxandy('0 players turn')
-                setturn(2)
+                x()
             }
             else if (turn == 2) {
-                setnine('0')
-                setxandy('X players turn')
-                setturn(1)
+                setnine('O')
+                y()
             }
 
         }
@@ -172,6 +194,8 @@ export default function Interface() {
             setseven('')
             seteight('')
             setnine('')
+            settie(false)
+            setwin(false)
         }
     }
 
@@ -179,7 +203,7 @@ export default function Interface() {
         <View style={styles.container}>
             <ImageBackground source={backgroundImage} style={styles.background} />
             <View style={styles.textCon1}>
-                <Text style={styles.title1}>Tic-Tak-Toe Game</Text>
+                <Text style={styles.title1}>Tic-Tac-Toe Game</Text>
             </View>
             <View style={styles.gridContainer}>
                 <Pressable style={styles.gridCell} onPress={One}><Text style={styles.one}>{one}</Text></Pressable>
@@ -198,8 +222,13 @@ export default function Interface() {
                         <Text style={styles.start}>{game ? 'Restart the Game' : 'Start the Game'}</Text>
                     </View>
                     <View style={styles.turn} >
-                        <Text style={[styles.turn1]}>{xandy}</Text>
+                        <Text style={[styles.turn1]}>{xandy} </Text>
+                        <Text style={[styles.turn1]}>
+                            {tie ? 'Game is Tied' : ''}
+                            {win ? 'X won the game' : ''}
+                        </Text>
                     </View>
+
                 </Pressable>
 
             </View>
@@ -222,9 +251,9 @@ const styles = StyleSheet.create({
     turn: {
         position: 'relative',
         top: 430,
-        left: 90,
-        height: 40,
-        width: 200,
+        left: 50,
+        height: 80,
+        width: 300,
         backgroundColor: '#0068a7',
         borderRadius: 10,
     },
