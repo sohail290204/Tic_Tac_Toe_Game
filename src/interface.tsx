@@ -1,203 +1,115 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import { ImageBackground, StyleSheet, Text, View, Dimensions, Pressable } from 'react-native';
+
 let moves = 0;
+
 export default function Interface() {
     const backgroundImage = require('./tic_tak_toe_bg.png');
 
-    const [one, setone] = useState(' ');
-    const [two, settwo] = useState(' ');
-    const [three, setthree] = useState(' ');
-    const [four, setfour] = useState(' ');
-    const [five, setfive] = useState(' ');
-    const [six, setsix] = useState(' ');
-    const [seven, setseven] = useState(' ');
-    const [eight, seteight] = useState(' ');
-    const [nine, setnine] = useState(' ');
+    const [one, setone] = useState('');
+    const [two, settwo] = useState('');
+    const [three, setthree] = useState('');
+    const [four, setfour] = useState('');
+    const [five, setfive] = useState('');
+    const [six, setsix] = useState('');
+    const [seven, setseven] = useState('');
+    const [eight, seteight] = useState('');
+    const [nine, setnine] = useState('');
     const [win, setwin] = useState(false);
     const [tie, settie] = useState(false);
     const [game, setgame] = useState(false);
     const [xandy, setxandy] = useState('Lets Start');
     const [turn, setturn] = useState(1);
+    const [gamewinner, setgamewinner] = useState('');
 
-
-
-    const winner = () => {
-        if ((one === two && one === three && (one === 'X' || one === 'O')) ||
-            (four === five && four === six && (four === 'X' || four === 'O')) ||
-            (seven === eight && seven === nine && (seven === 'X' || seven === 'O'))) {
-            setwin(true);
-        }
-        // Columns
-        else if ((one === four && one === seven && (one === 'X' || one === 'O')) ||
-            (two === five && two === eight && (two === 'X' || two === 'O')) ||
-            (three === six && three === nine && (three === 'X' || three === 'O'))) {
-            setwin(true);
-        }
-        // Diagonals
-        else if ((one === five && one === nine && (one === 'X' || one === 'O')) ||
-            (three === five && three === seven && (three === 'X' || three === 'O'))) {
-            setwin(true);
-        }
-        else if (moves == 9) {
-            settie(true)
-        }
-        else {
-            settie(false)
-        }
-    }
-    const x = () => {
-        setxandy('0 players turn')
-        setturn(2)
-        moves = moves + 1
-        winner()
-    }
-    const y = () => {
-        setxandy('X players turn')
-        setturn(1)
-        moves = moves + 1
-        winner()
-    }
-    const One = () => {
+    useEffect(() => {
         if (game) {
-            if (turn == 1) {
-                setone('X')
-                x()
-
-            }
-            else if (turn == 2) {
-                setone('O')
-                y()
-            }
-
+            checkWinner();
         }
-    }
-    const Two = () => {
-        if (game) {
-            if (turn == 1) {
-                settwo('X')
-                x()
-            }
-            else if (turn == 2) {
-                settwo('O')
-                y()
-            }
+    }, [one, two, three, four, five, six, seven, eight, nine]);
 
-        }
-    }
-    const Three = () => {
-        if (game) {
-            if (turn == 1) {
-                setthree('X')
-                x()
-            }
-            else if (turn == 2) {
-                setthree('O')
-                y()
-            }
+    const Xwin = () => {
+        setxandy('');
+        setwin(true);
+        setgame(false);
+        setgamewinner('X');
+    };
 
-        }
-    }
-    const Four = () => {
-        if (game) {
-            if (turn == 1) {
-                setfour('X')
-                x()
-            }
-            else if (turn == 2) {
-                setfour('O')
-                y()
-            }
+    const Owin = () => {
+        setwin(true);
+        setxandy('');
+        setgame(false);
+        setgamewinner('O');
+    };
 
+    const checkWinner = () => {
+        if (
+            (one === two && one === three && one === 'X') ||
+            (four === five && four === six && four === 'X') ||
+            (seven === eight && seven === nine && seven === 'X') ||
+            (one === four && one === seven && one === 'X') ||
+            (two === five && two === eight && two === 'X') ||
+            (three === six && three === nine && three === 'X') ||
+            (one === five && one === nine && one === 'X') ||
+            (three === five && three === seven && three === 'X')
+        ) {
+            Xwin();
+        } else if (
+            (one === two && one === three && one === 'O') ||
+            (four === five && four === six && four === 'O') ||
+            (seven === eight && seven === nine && seven === 'O') ||
+            (one === four && one === seven && one === 'O') ||
+            (two === five && two === eight && two === 'O') ||
+            (three === six && three === nine && three === 'O') ||
+            (one === five && one === nine && one === 'O') ||
+            (three === five && three === seven && three === 'O')
+        ) {
+            Owin();
+        } else if (moves === 9) {
+            setxandy('');
+            settie(true);
+        } else {
+            setxandy(turn === 1 ? 'X players turn' : 'O players turn');
         }
-    }
-    const Five = () => {
-        if (game) {
-            if (turn == 1) {
-                setfive('X')
-                x()
-            }
-            else if (turn == 2) {
-                setfive('O')
-                y()
-            }
+    };
 
+    const makeMove = (currentValue: string, setValue: React.Dispatch<React.SetStateAction<string>>) => {
+        if (game && !win && !tie && currentValue === '') {
+            if (turn === 1) {
+                setValue('X');
+                setturn(2);
+                setxandy('O players turn');
+            } else {
+                setValue('O');
+                setturn(1);
+                setxandy('X players turn');
+            }
+            moves++;
         }
-    }
-    const Six = () => {
-        if (game) {
-            if (turn == 1) {
-                setsix('X')
-                x()
-            }
-            else if (turn == 2) {
-                setsix('O')
-                y()
-            }
-
-        }
-    }
-    const Seven = () => {
-        if (game) {
-            if (turn == 1) {
-                setseven('X')
-                x()
-            }
-            else if (turn == 2) {
-                setseven('O')
-                y()
-            }
-
-        }
-    }
-    const Eight = () => {
-        if (game) {
-            if (turn == 1) {
-                seteight('X')
-                x()
-            }
-            else if (turn == 2) {
-                seteight('O')
-                y()
-            }
-
-        }
-    }
-    const Nine = () => {
-        if (game) {
-            if (turn == 1) {
-                setnine('X')
-                x()
-            }
-            else if (turn == 2) {
-                setnine('O')
-                y()
-            }
-
-        }
-    }
+    };
 
     const Game = () => {
-        setgame(!game)
-        // console.log(game)
+        setgame(!game);
         if (!game) {
-            setxandy('X players turn')
+            setxandy('X players turn');
+        } else {
+            setturn(1);
+            setxandy('Lets Start');
+            setone('');
+            settwo('');
+            setthree('');
+            setfour('');
+            setfive('');
+            setsix('');
+            setseven('');
+            seteight('');
+            setnine('');
+            settie(false);
+            setwin(false);
+            setgamewinner('');
+            moves = 0;
         }
-        else {
-            setturn(1)
-            setxandy('Lets Start')
-            setone('')
-            settwo('')
-            setthree('')
-            setfour('')
-            setfive('')
-            setsix('')
-            setseven('')
-            seteight('')
-            setnine('')
-            settie(false)
-            setwin(false)
-        }
-    }
+    };
 
     return (
         <View style={styles.container}>
@@ -206,33 +118,48 @@ export default function Interface() {
                 <Text style={styles.title1}>Tic-Tac-Toe Game</Text>
             </View>
             <View style={styles.gridContainer}>
-                <Pressable style={styles.gridCell} onPress={One}><Text style={styles.one}>{one}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Two}><Text style={styles.one}>{two}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Three}><Text style={styles.one}>{three}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Four}><Text style={styles.one}>{four}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Five}><Text style={styles.one}>{five}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Six}><Text style={styles.one}>{six}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Seven}><Text style={styles.one}>{seven}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Eight}><Text style={styles.one}>{eight}</Text></Pressable>
-                <Pressable style={styles.gridCell} onPress={Nine}><Text style={styles.one}>{nine}</Text></Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(one, setone)}>
+                    <Text style={styles.one}>{one}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(two, settwo)}>
+                    <Text style={styles.one}>{two}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(three, setthree)}>
+                    <Text style={styles.one}>{three}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(four, setfour)}>
+                    <Text style={styles.one}>{four}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(five, setfive)}>
+                    <Text style={styles.one}>{five}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(six, setsix)}>
+                    <Text style={styles.one}>{six}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(seven, setseven)}>
+                    <Text style={styles.one}>{seven}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(eight, seteight)}>
+                    <Text style={styles.one}>{eight}</Text>
+                </Pressable>
+                <Pressable style={styles.gridCell} onPress={() => makeMove(nine, setnine)}>
+                    <Text style={styles.one}>{nine}</Text>
+                </Pressable>
             </View>
             <View>
                 <Pressable onPress={Game}>
                     <View style={styles.startbtn}>
                         <Text style={styles.start}>{game ? 'Restart the Game' : 'Start the Game'}</Text>
                     </View>
-                    <View style={styles.turn} >
-                        <Text style={[styles.turn1]}>{xandy} </Text>
-                        <Text style={[styles.turn1]}>
-                            {tie ? 'Game is Tied' : ''}
-                            {win ? 'X won the game' : ''}
-                        </Text>
-                    </View>
-
                 </Pressable>
-
+                <View style={styles.turn}>
+                    <Text style={styles.turn1}>{xandy}</Text>
+                    <Text style={styles.turn1}>
+                        {tie ? 'Game is Tied' : ''}
+                        {gamewinner} {win ? '🏆' : ''}
+                    </Text>
+                </View>
             </View>
-
         </View>
     );
 }
